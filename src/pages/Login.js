@@ -1,15 +1,16 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './Login.css';
 
-
-export default function Login() {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = () => {
+
+  const handleSubmit = () => {
     if (email === 'admin@gmail.com' && password === 'admin') {
-      navigate('/userManagement');
+      navigate('/UserManagement');
     } else {
       alert('Invalid credentials');
     }
@@ -17,10 +18,29 @@ export default function Login() {
 
   return (
     <div className="login-container">
-      <h2>Welcome to Astronaut VR</h2>
-      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <button onClick={handleLogin}>Login</button>
+      <div className="login-box">
+        <h2>Welcome to Astronaut VR</h2>
+        <form onSubmit={handleSubmit}>
+          <label>Log in</label>
+          <input
+            type="email"
+            placeholder="admin@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="********"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Log In</button>
+        </form>
+      </div>
     </div>
   );
-}
+};
+
+export default Login;
