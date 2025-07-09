@@ -1,11 +1,19 @@
-import { configurationStore } from '@reduxjs/toolkit';
-import { userReducer } from '.features/user/userSlice';
+import { configureStore } from '@reduxjs/toolkit';
+import userReducer from './features/userSlice';
 
-export const store = configurationStore({
-    reducer: {
-        user: userReducer,
-    }
-})
 
+const persistedUsers = JSON.parse(localStorage.getItem('usersState'));
+
+const store = configureStore({
+  reducer: {
+    users: userReducer,
+  },
+  preloadedState: persistedUsers ? { users: persistedUsers } : undefined,
+});
+
+
+store.subscribe(() => {
+  localStorage.setItem('usersState', JSON.stringify(store.getState().users));
+});
 
 export default store;

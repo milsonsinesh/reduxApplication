@@ -1,16 +1,28 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from  '../features/userSlice';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.users.users);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  const handleSubmit = () => {
-    if (email === 'admin@gmail.com' && password === 'admin') {
-      navigate('/UserManagement');
+    const foundUser = users.find(
+      (user) => user.email === email && user.password === password
+    );
+    if (
+      (email === 'admin@gmail.com' && password === 'admin') ||
+      foundUser
+    ) {
+      dispatch(login(email));
+      navigate('/userManagement'); // Navigate to user management page
     } else {
       alert('Invalid credentials');
     }
